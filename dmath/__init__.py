@@ -340,7 +340,7 @@ def atan(x, context=None):
     context.prec -= 2
     return +s
 
-def atan2(y, x, context=context):
+def atan2(y, x, context=None):
     """Return the arctangent of y/x in radians.
     
     Unlike atan(y/x), the signs of both x and y are considered.
