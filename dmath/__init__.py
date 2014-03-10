@@ -76,9 +76,11 @@ def float_to_decimal(f):
 # constants
 #
 
-def pi():
+def pi(context=None):
     """Compute Pi to the current precision."""
-    getcontext().prec += 2
+    if context is None:
+        context = getcontext()
+    context.prec += 2
     lasts = 0; t = D(3); s = 3; n = 1; na = 0; d = 0; da = 24
     while s != lasts:
         lasts = s
@@ -86,7 +88,7 @@ def pi():
         d, da = d + da, da + 32
         t = (t * n) / d
         s += t
-    getcontext().prec -= 2
+    context.prec -= 2
     return +s
 
 def e():
@@ -109,12 +111,12 @@ def exp(x, context=None):
     context.prec += 2
     i = 0; lasts = 0; s = 1; fact = 1; num = 1
     while s != lasts:
-        lasts = s    
+        lasts = s
         i += 1
         fact *= i
-        num *= x     
-        s += num / fact   
-    context.prec -= 2        
+        num *= x
+        s += num / fact
+    context.prec -= 2
     return +s
 
 def log(x, base=None, context=None):
@@ -135,7 +137,7 @@ def log(x, base=None, context=None):
     elif x == 0:
         return D('-Inf', context=context)
     
-    context.prec += 2    
+    context.prec += 2
     
     if base is None:
         log_base = 1
@@ -170,7 +172,7 @@ def sin(x, context=None):
     context.prec += 2
     i, lasts, s, fact, num, sign = 1, 0, x, 1, x, 1
     while s != lasts:
-        lasts = s    
+        lasts = s
         i += 2
         fact *= i * (i - 1)
         num *= x * x
@@ -189,13 +191,13 @@ def cos(x, context=None):
     context.prec += 2
     i = 0; lasts = 0; s = 1; fact = 1; num = 1; sign = 1
     while s != lasts:
-        lasts = s    
+        lasts = s
         i += 2
         fact *= i * (i - 1)
         num *= x * x
         sign = -sign
         s += num / fact * sign 
-    context.prec -= 2        
+    context.prec -= 2
     return +s
 
 def tan(x, context=None):
@@ -312,6 +314,8 @@ def atan(x, context=None):
     """Return the arctangent of x in radians."""
     if context is None:
         context = getcontext()
+    
+    c = None
     
     if x == 0:
         return D(0, context=context)
